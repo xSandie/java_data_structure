@@ -446,3 +446,53 @@ java.lang.NoClassDefFoundError: javax/xml/bind/JAXBContext
 	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.poll(DefaultNewsPollingService.java:64)
 	at org.eclipse.recommenders.internal.news.rcp.poll.PollFeedsJob.run(PollFeedsJob.java:70)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.jobs 4 2 2018-12-06 15:40:54.808
+!MESSAGE An internal error occurred during: "Polling news feeds".
+!STACK 0
+java.lang.NoClassDefFoundError: javax/xml/bind/JAXBContext
+	at org.eclipse.mylyn.internal.commons.notifications.feed.FeedReader.parse(FeedReader.java:52)
+	at org.eclipse.recommenders.news.impl.poll.DefaultFeedItemStore.parseNewsItems(DefaultFeedItemStore.java:135)
+	at org.eclipse.recommenders.news.impl.poll.DefaultFeedItemStore.udpate(DefaultFeedItemStore.java:53)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.fallbackToLocalStore(DefaultNewsPollingService.java:136)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.poll(DefaultNewsPollingService.java:104)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.poll(DefaultNewsPollingService.java:64)
+	at org.eclipse.recommenders.internal.news.rcp.poll.PollFeedsJob.run(PollFeedsJob.java:70)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.jobs 4 2 2018-12-06 15:45:54.862
+!MESSAGE An internal error occurred during: "Polling news feeds".
+!STACK 0
+java.lang.NoClassDefFoundError: javax/xml/bind/JAXBContext
+	at org.eclipse.mylyn.internal.commons.notifications.feed.FeedReader.parse(FeedReader.java:52)
+	at org.eclipse.recommenders.news.impl.poll.DefaultFeedItemStore.parseNewsItems(DefaultFeedItemStore.java:135)
+	at org.eclipse.recommenders.news.impl.poll.DefaultFeedItemStore.udpate(DefaultFeedItemStore.java:53)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.fallbackToLocalStore(DefaultNewsPollingService.java:136)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.poll(DefaultNewsPollingService.java:104)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.poll(DefaultNewsPollingService.java:64)
+	at org.eclipse.recommenders.internal.news.rcp.poll.PollFeedsJob.run(PollFeedsJob.java:70)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.core.jobs 4 2 2018-12-06 15:50:54.866
+!MESSAGE An internal error occurred during: "Polling news feeds".
+!STACK 0
+java.lang.NoClassDefFoundError: javax/xml/bind/JAXBContext
+	at org.eclipse.mylyn.internal.commons.notifications.feed.FeedReader.parse(FeedReader.java:52)
+	at org.eclipse.recommenders.news.impl.poll.DefaultFeedItemStore.parseNewsItems(DefaultFeedItemStore.java:135)
+	at org.eclipse.recommenders.news.impl.poll.DefaultFeedItemStore.udpate(DefaultFeedItemStore.java:53)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.fallbackToLocalStore(DefaultNewsPollingService.java:136)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.poll(DefaultNewsPollingService.java:104)
+	at org.eclipse.recommenders.news.impl.poll.DefaultNewsPollingService.poll(DefaultNewsPollingService.java:64)
+	at org.eclipse.recommenders.internal.news.rcp.poll.PollFeedsJob.run(PollFeedsJob.java:70)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.ui.ide 4 4 2018-12-06 15:54:31.873
+!MESSAGE Problems saving workspace
+
+!ENTRY org.eclipse.ui.ide 2 1 2018-12-06 15:54:31.876
+!MESSAGE Problems occurred while trying to save the state of the workbench.
+!SUBENTRY 1 org.eclipse.core.resources 2 234 2018-12-06 15:54:31.876
+!MESSAGE The project description file (.project) for 'array' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.
+
+!ENTRY org.eclipse.core.resources 2 10035 2018-12-06 15:54:33.066
+!MESSAGE The workspace will exit with unsaved changes in this session.

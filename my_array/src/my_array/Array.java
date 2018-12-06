@@ -1,8 +1,8 @@
 package my_array;
 
-public class Array {
+public class Array<Element> {//代表支持泛型，数据类型是Element，存储引用
 	
-	private	int[] data;
+	private	Element[] data;
 	private int size;//数组有值元素的个数
 	/**
 	 * 
@@ -11,7 +11,7 @@ public class Array {
 	 * 构造函数，传入数组的容量构造Array
 	 */
 	public Array(int capacity){
-		data= new int[capacity];
+		data= (Element[]) new Object[capacity];
 		size = 0 ;
 	}
 	//无参数构造函数
@@ -27,19 +27,19 @@ public class Array {
 		return data.length;
 	}
 
-	public Boolean isEmpty(){
+	public boolean isEmpty(){
 		return size == 0;
 	}
 	//向末尾添加一个元素
-	public void addLast(int e){
+	public void addLast(Element e){
 		add(size, e);
 	}
 	//向数组起始位置添加一个元素
-	public void addFirst(int e){
+	public void addFirst(Element e){
 		add(0, e);
 	}
 	//向指定位置添加元素
-	public void add(int index,int e){
+	public void add(int index,Element e){
 		if(size==data.length){
 			throw new IllegalArgumentException("Array is full");
 		}
@@ -54,9 +54,89 @@ public class Array {
 		size++;
 	}
 
-	@Override//覆盖父类的方法
+	//获取index索引位置的元素
+	public Element get(int index){
+		if(index<0||index>=size){
+			throw new IllegalArgumentException("Index is Illegal");
+		}
+		return data[index];
+	}
+
+	//数组元素更新
+	public void set(int index,Element e){
+		if(index<0||index>=size){
+			throw new IllegalArgumentException("Index is Illegal");
+		}
+		data[index]=e;
+	}
+
+	//查找是否包含某个元素
+	public boolean contains(Element e){
+		for (int i=0;i<size;i++){
+			if(data[i].equals(e)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//找出对应元素的索引
+	public int find(Element e){
+		for(int i=0;i<size;i++){
+			if (data[i].equals(e)){//使用值比较
+				return i;
+			}
+		}
+		return -1;//返回无效索引
+	}
+
+	//删除index位置元素
+	public Element remove(int index){
+		if(index<0||index>=size){
+			throw new IllegalArgumentException("Index is Illegal");
+		}
+		Element ret=data[index];//返回值
+		for (int i = index-1; i < size; i++) {
+			data[i-1]=data[i];
+		}
+		size--;
+		//使data[size]能够被垃圾回收
+		data[size]=null;
+		return ret;
+	}
+	//删除最开始和最末尾元素
+	public Element removeFirst(){
+		return remove(0);
+	}
+	public Element removeLast(){
+		return remove(size-1);
+	}
+
+	//删除指定值的元素
+	public void removeElement(Element e){
+		int index=find(e);
+		if(index != -1){
+			remove(index);
+		}
+	}
+
+	@Override//覆盖父类的方法,定义类在打印输出时输出什么代码
 	public String toString(){
-		StringBuilder res = new StringBuilder();
+		// Returns a string representation of the object. 
+		// In general, the toString method returns a string that "textually represents" this object. 
+		// The result should be a concise but informative representation that is easy for a person to read. 
+		// It is recommended that all subclasses override this method.
+		StringBuilder res = new StringBuilder();//Constructs a string builder with no characters in it and an initial capacity of 16 characters.
 		res.append(String.format("Array:size = %d , capacity = %d\n", size,data.length));
+		res.append('[');
+		for (int i = 0; i < size; i++) {
+			res.append(data[i]);
+			if(i!=size-1){//不是最后一个元素
+				res.append(", ");
+			}
+		}
+		res.append(']');
+		return res.toString();//这里调用的是StringBuilder的toString方法，让他变成字符串
+
 	}
 }
