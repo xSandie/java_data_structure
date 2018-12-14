@@ -41,7 +41,7 @@ public class Array<Element> {//代表支持泛型，数据类型是Element，存
 	//向指定位置添加元素
 	public void add(int index,Element e){
 		if(size==data.length){
-			throw new IllegalArgumentException("Array is full");
+			resize(2*data.length);
 		}
 		if(index <0 || index>size){
 			throw new IllegalArgumentException("Index is wrong");
@@ -102,6 +102,9 @@ public class Array<Element> {//代表支持泛型，数据类型是Element，存
 		size--;
 		//使data[size]能够被垃圾回收
 		data[size]=null;
+		if (size == data.length/4 && data.length/4!=0){
+			resize(data.length/2);
+		}
 		return ret;
 	}
 	//删除最开始和最末尾元素
@@ -139,4 +142,13 @@ public class Array<Element> {//代表支持泛型，数据类型是Element，存
 		return res.toString();//这里调用的是StringBuilder的toString方法，让他变成字符串
 
 	}
+
+	private void resize(int newCapacity){
+		Element[] newData = (Element[])new Object[newCapacity];//强制类型转化成Element，因为不支持new 泛型,getCapacity获取的是data.length，所以不需要再手动改变capacity
+		for(int i=0;i<size;i++){
+			newData[i]=data[i];
+		}
+		data=newData;
+	}
+
 }
