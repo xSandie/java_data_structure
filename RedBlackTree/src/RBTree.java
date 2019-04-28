@@ -1,17 +1,15 @@
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
-public class AVLTree<K extends Comparable<K>,V> {//泛型必须可比较
+public class RBTree<K extends Comparable<K>,V> {//泛型必须可比较
     //todo 自己练习非递归实现
     private class Node{
         public K key;
         public V value;
         public Node left,right;
         public int height;//当前节点所处高度值
+        public boolean color;
 
         public Node(K key,V value){
             this.key = key;
@@ -19,13 +17,17 @@ public class AVLTree<K extends Comparable<K>,V> {//泛型必须可比较
             left = null;
             right = null;
             height = 1;//叶子节点
+            color = RED;//默认红色
         }
     }
+
+    public static final boolean RED = true;
+    public static final boolean BLACK = false;
 
     private Node root;
     private int size;
 
-    public AVLTree(){
+    public RBTree(){
         root = null;
         size = 0;
     }
@@ -47,70 +49,66 @@ public class AVLTree<K extends Comparable<K>,V> {//泛型必须可比较
     }
 
     public void add(K key,V value){
-
         root = add(root, key, value);
+        root.color = BLACK;//保持最终的根节点为黑色节点
     }
-    //向以node为根的BST添加元素e，递归算法
-    //返回插入新节点后的BST的根
+    //判断节点node的元素
+    private boolean isRed(Node node){
+        if (node == null){
+            return BLACK;
+        }
+        return node.color;
+    }
+    //向以node为根的红黑树添加元素e，递归算法
+    //返回插入新节点后的红黑树的根
     //先插入，再判断，再调整
     private Node add(Node node, K key, V value){
         //递归终止条件
 
         if (node == null){
             size++;
-            return new Node(key, value);
+            return new Node(key, value);//默认插入红节点
         }
 
-        //进行递归调用,连接回去。
+        //进行递归调用,连接回去。判断插入哪
         if (key.compareTo(node.key)<0) node.left = add(node.left, key, value);
         else if (key.compareTo(node.key)>0) node.right = add(node.right, key, value);
         else node.value = value;
 
-        //更新height值
-        node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
-
-        //计算平衡因子
-        int banlanceFactor = getBalanceFactor(node);
-        //不满足平衡二叉树条件，维护平衡性
-        if (banlanceFactor>1 && getBalanceFactor(node.left)>=0) {//根左侧的左侧添加，导致不平衡,右旋转 node左子树高度>=右子树高度；左-右
-            return rightRotate(node);
-        }
-        if (banlanceFactor<-1 && getBalanceFactor(node.right)<=0){//根右侧的右侧添加
-            return leftRotate(node);
-        }
-        if (banlanceFactor>1 && getBalanceFactor(node.left)<0){//根左侧的右侧添加，导致不平衡
-            node.left = leftRotate(node.left);//先对根节点左孩子左旋转
-            return rightRotate(node);
-        }
-        if (banlanceFactor<-1 && getBalanceFactor(node.right)>0){//根右侧的左侧添加
-            node.right = rightRotate(node.right);//先对根节点右孩子右旋转
-            return leftRotate(node);
-
-        }
+        //维护，ppt逻辑顺序执行，不是互斥关系
+        if (isRed(node.right) && !isRed(node.left))//右孩子是红色，左孩子不是红色，左旋转操作
+            node = leftRotate(node);
+        if (isRed(node.left) && isRed(node.left.left))
+            node = rightRotate(node);
+        if (isRed(node.left) && isRed(node.right))
+            flipColors(node);
 
         return node;//插入了以后的node还是得返回，重新串一遍，根节点返回上一层
     }
-    //右旋转
-    private Node rightRotate(Node y){
-        Node x = y.left;
-        Node T3 = x.right;
-        x.right = y;
-        y.left = T3;
-        //更新height,看h示意图。
-        y.height = Math.max(getHeight(y.left),getHeight(y.right)) +1;
-        x.height = Math.max(getHeight(x.left),getHeight(x.right)) +1;
+    //左旋转
+    private Node leftRotate(Node node){
+        Node x = node.right;
+        node.right = x.left;
+        x.left = node;
 
+        x.color = node.color;//
+        node.color = RED;
         return x;
     }
-    //左旋转
-    private Node leftRotate(Node y){
-        Node x = y.right;
-        Node T3 = x.left;
-        x.left = y;
-        y.right = T3;
+    //颜色反转
+    private void flipColors(Node node){
+        node.color = RED;
+        node.left.color = BLACK;
+        node.right.color = BLACK;
+    }
+    //右旋转
+    private Node rightRotate(Node node){
+        Node x = node.left;
+        node.left = x.right;
+        x.right = node;
 
-        y.height = Math.max(getHeight(y.left),getHeight(y.right)) +1;
-        x.height = Math.max(getHeight(x.left),getHeight(x.right)) +1;
+        x.color = node.color;
+        node.color = RED;
 
         return x;
     }
